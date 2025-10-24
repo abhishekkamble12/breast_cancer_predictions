@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Creates a 2-column layout */
+            gap: 15px; /* Space between grid items */
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .prediction-result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        /* Style for malignant (dangerous) prediction */
+        .prediction-result.malignant h2 {
+            color: #d9534f; /* Red */
+        }
+        /* Style for benign (safe) prediction */
+        .prediction-result.benign h2 {
+            color: #5cb85c; /* Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Breast Cancer Prediction Model</h1>
+        <p style="text-align: center; margin-bottom: 20px;">
+            Please enter the patient's medical features below.
+        </p>
+
+        <form action="{{ url_for('predict') }}" method="POST">
+            
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="radius_mean">Radius (mean)</label>
+                    <input type="number" step="any" id="radius_mean" name="radius_mean" placeholder="e.g., 17.99" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="texture_mean">Texture (mean)</label>
+                    <input type="number" step="any" id="texture_mean" name="texture_mean" placeholder="e.g., 10.38" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="perimeter_mean">Perimeter (mean)</label>
+                    <input type="number" step="any" id="perimeter_mean" name="perimeter_mean" placeholder="e.g., 122.8" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="area_mean">Area (mean)</label>
+                    <input type="number" step="any" id="area_mean" name="area_mean" placeholder="e.g., 1001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="smoothness_mean">Smoothness (mean)</label>
+                    <input type="number" step="any" id="smoothness_mean" name="smoothness_mean" placeholder="e.g., 0.1184" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="compactness_mean">Compactness (mean)</label>
+                    <input type="number" step="any" id="compactness_mean" name="compactness_mean" placeholder="e.g., 0.2776" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="concavity_mean">Concavity (mean)</label>
+                    <input type="number" step="any" id="concavity_mean" name="concavity_mean" placeholder="e.g., 0.3001" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concave_points_mean">Concave Points (mean)</label>
+                    <input type="number" step="any" id="concave_points_mean" name="concave_points_mean" placeholder="e.g., 0.1471" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="symmetry_mean">Symmetry (mean)</label>
+                    <input type="number" step="any" id="symmetry_mean" name="symmetry_mean" placeholder="e.g., 0.2419" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fractal_dimension_mean">Fractal Dimension (mean)</label>
+                    <input type="number" step="any" id="fractal_dimension_mean" name="fractal_dimension_mean" placeholder="e.g., 0.07871" required>
+                </div>
+
+                </div> <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="prediction-result {{ prediction_class }}">
+                <h2>{{ prediction_text }}</h2>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
